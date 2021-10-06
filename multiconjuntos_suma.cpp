@@ -1,3 +1,5 @@
+//NO ME CREO NI YO Q FUNCIONE JAJA
+
 void mcj_enters::unir(const mcj_enters& B){ //XD
         if(ini==NULL and B.ini==NULL){
 
