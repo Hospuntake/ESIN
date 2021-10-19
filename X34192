@@ -145,7 +145,10 @@ Abin<int> llegir_arbre() {
     nat Abin<T>::nodes_subarbres_buits()const{
         int resp=0;
         node* aux= _arrel;
-        odes_subarbres_buits_2(aux,resp);
+        if(aux!=NULL){
+          odes_subarbres_buits_2(aux,resp);
+        }
+        
 
 
         return resp;
