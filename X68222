@@ -1,6 +1,6 @@
   //Arbre general és n-ari?X68222
  
- #include <cstdlib>
+  #include <cstdlib>
  #include <iostream>
  using namespace std;
  typedef unsigned int nat;
@@ -87,7 +87,7 @@
 
   }
  };
- /*
+ 
  // Aquí va la implementació del mètode nari
   template <typename T>
   bool Arbre<T>::nari(nat n) const{
@@ -99,7 +99,7 @@
   }
   #include <iostream>
 #include <stack>
-
+/*
 template <typename T>				
 typename Arbre<T>::node* Arbre<T>::copia_arbre(node* p) { 
   node* aux = NULL;
