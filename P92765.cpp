@@ -346,33 +346,43 @@ int main(){
   int a;
   int num;
   cin>>num;
-  arbreBin<int> resp;
-  int cont=0;
-  while(cont<num){
-    cin>>a;
-    if(a!=-1){
-      
-      nombre.push_back(a);
-      ++cont;
+  if(num>0){
+    arbreBin<int> resp;
+    int cont=0;
+    while(cont<num){
+      cin>>a;
+      if(a!=-1){
+        
+        nombre.push_back(a);
+        ++cont;
+        
+      }
+    } 
+
+    int lon=nombre.size();
+
+    arbreBin<int> respr(nombre[0],resp,resp);
+
+    for(int i=1;i<lon;++i){
+      if(nombre[i]!=-1)respr.insereix(nombre[i]);
+        
+    }
+    int e;
+    while(cin>>e){
+      if(e==-1){}
+      else if(respr.el_trobem(e))cout<<e<<" "<<"1"<<endl;
+      else cout<<e<<" "<<"0"<<endl;
+    }
+  }
+  else{
+    int e;
+
+    while(cin>>e){
+      cout<<e<<" "<<"0"<<endl;
       
     }
-  } 
 
-  int lon=nombre.size();
-
-  arbreBin<int> respr(nombre[0],resp,resp);
-
-  for(int i=1;i<lon;++i){
-    if(nombre[i]!=-1)respr.insereix(nombre[i]);
-      
   }
-  int e;
-  while(cin>>e){
-    if(e==-1){}
-    else if(respr.el_trobem(e))cout<<e<<" "<<"1"<<endl;
-    else cout<<e<<" "<<"0"<<endl;
-  }
-    
 
 
 
