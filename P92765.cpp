@@ -180,7 +180,7 @@ void arbreBin<T>::insereix2(int e,node* x)
 /* Pre: cert */
 /* Post: el paràmetre implícit se li fica e en bfs */
 {
-  if(x->info<=e){//Esquerra
+  if(x->info<e){//Esquerra
     if(x->f_esq==NULL){
       node* ere=new node;
       x->f_esq=ere;
@@ -194,7 +194,7 @@ void arbreBin<T>::insereix2(int e,node* x)
 
 
   }
-  else{ //Dreta
+  else if(x->info>e){ //Dreta
     if(x->f_dret==NULL){
       node* ere=new node;
       x->f_dret=ere;
@@ -217,17 +217,12 @@ bool arbreBin<T>::el_trobem(int e)
   while(p!=NULL and not ere){
     if(p->info==e)ere=true;
 
-    else if(e>p->info){//dreta
+    else if(e>p->info){//esq
       p=p->f_esq;
-    
-    
     }
-    else{//Esquerra
+    else{//dreta
       p=p->f_dret;
     }
-
-
-
   }
 
   return ere;
@@ -348,25 +343,22 @@ int main(){
   cin>>num;
   if(num>0){
     arbreBin<int> resp;
-    int cont=0;
+    int cont=1;
+    cin>>a;
+    arbreBin<int> respr(a,resp,resp);
     while(cont<num){
       cin>>a;
       if(a!=-1){
         
-        nombre.push_back(a);
+        respr.insereix(a);
         ++cont;
         
       }
     } 
+    //cout<<respr<<endl;
 
-    int lon=nombre.size();
 
-    arbreBin<int> respr(nombre[0],resp,resp);
-
-    for(int i=1;i<lon;++i){
-      if(nombre[i]!=-1)respr.insereix(nombre[i]);
-        
-    }
+    
     int e;
     while(cin>>e){
       if(e==-1){}
