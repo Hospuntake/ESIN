@@ -1,106 +1,65 @@
-#ifndef ARBREBIN_HPP
-#define ARBREBIN_HPP
-
-#include <string>
 #include <cstdlib>
-#include <iostream>
-#include <stack>
-#include <vector>
-using namespace std;
+ #include <iostream>
+ using namespace std;
+ typedef unsigned int nat;
+ 
+ template <typename T>
+ class Abin {
+   public:
+     Abin(): _arrel(NULL) {};
+     // Pre: cert
+     // Post: el resultat és un arbre sense cap element
+     Abin(Abin<T> &ae, const T &x, Abin<T> &ad);
+     // Pre: cert
+     // Post: el resultat és un arbre amb un element i dos subarbres
+ 
+     // Les tres grans
+     Abin(const Abin<T> &a);
+     ~Abin();
+     Abin<T>& operator=(const Abin<T>& a);
+ 
+     // operador << d’escriptura
+     template <class U> friend std::ostream& operator<<(std::ostream&, const Abin<U> &a);
+ 
+     // operador >> de lectura
+     template <class U> friend std::istream& operator>>(std::istream&, Abin<U> &a);
+     
+     
+ void insereix(int e);
+     // Modifica el contingut de l’arbre per tal de guardar a cada node el factor
+     // d’equilibri (diferència entre l’altura fill esquerra i l’altura fill dret).
+     bool el_trobem(int e);
+     
+ 
+   private:
+     struct node {
+       node* f_esq;
+       node* f_dret;
+       T info;
+     };
+     node* _arrel;
+     static node* copia_nodes(node* m);
+     static void esborra_nodes(node* m);
+     static void print_nodes(node* m, ostream &os, string d1);
+      void insereix2(int e,node* x);
+     // Aquí va l’especificació dels mètodes privats addicionals
+     
 
-/// -----------------------------------------
-///
-///  Declaració operacions tipus ARBRE BINARI
-///
-/// -----------------------------------------
+ };
+ 
+ // Aquí va la implementació del mètode arbre_factors_equilibri
+
+
+
+
+ 
 
 template <typename T>
-class arbreBin {
-
-  private:
-    struct node {
-      node* f_esq;
-      node* f_dret;
-      T info;
-    };
-    node* _arrel;
-
-    static node* copia_nodes(node* m);
-    /* Pre: cert */
-    /* Post: si m és NULL, el resultat és NULL; sinó,
-       el resultat apunta al primer node d'un arbre binari
-       de nodes que són còpia de l'arbre apuntat per m */
-    static void esborra_nodes(node* m);
-    /* Pre: cert */
-    /* Post: no fa res si m és NULL, sinó allibera
-       espai dels nodes de l'arbre binari apuntat per m */
-
-  public:
-    //constructors
-    arbreBin();
-    /* Pre: cert */
-    /* Post: el resultat és un arbre sense cap element */
-    arbreBin(const arbreBin<T> &a);
-    /* Pre: cert */
-    /* Post: el resultat és una còpia de l'arbre rebut */
-    arbreBin(const T &x,const arbreBin<T> &ae,const arbreBin<T> &ad);
-    /* Pre: cert */
-    /* Post: el resultat és un arbre amb un element i dos
-       subarbres */
-
-    //destructor: esborra automàticament els objectes locals
-    //en sortir d'un àmbit de visibilitat
-    ~arbreBin();
-
-    //modificadors
-    void a_buit();
-    /* Pre: cert */
-    /* Post: el paràmetre implícit no té cap element */
-    arbreBin<T>& operator=(const arbreBin<T> &a);
-    /* Pre: cert */
-    /* Post: operació d'assignació d'arbres  */
-
-    //consultors
-    const T& arrel() const;
-    /* Pre: el paràmetre implícit no és buit */
-    /* Post: el resultat és l'arrel del paràmetre implícit */
-    arbreBin<T> fe() const;
-    /* Pre: el paràmetre implícit no és buit */
-    /* Post: el resultat és el fill esquerre del p.i. original */
-    arbreBin<T> fd() const;
-    /* Pre: el paràmetre implícit no és buit */
-    /* Post: el resultat és el fill dret del p.i. original */
-    bool es_buit() const;
-    /* Pre: cert */
-    /* Post: el resultat indica si el p.i. és buit o no */
-    void insereix(int e);
-    /* Pre: cert */
-    /* Post: el paràmetre implícit se li fica e en bfs */
-    void insereix2(int e,node* x);
-    bool el_trobem(int e);
-    // operador << d'escriptura
-    template <class U> friend std::ostream& operator<<(std::ostream&, const arbreBin<U> &a);
-    /* Pre: cert */
-    /* Post: s'han escrit al canal estandard de sortida els elements d'a*/
-
-    // operador >> de lectura
-    template <class U> friend std::istream& operator>>(std::istream&, arbreBin<U> &a);
-    /* Pre: a és buit; el canal estàndard d'entrada conté la mida de
-       l'arbre i els nodes en postordre d'un arbre binari A; per cada
-       node s'indica el seu valor i el nombre de fills */
-    /* Post: a = A */
-};
-
-
-/// ------------------------------------------
-///
-///  Codificació operacions tipus ARBRE BINARI
-///
-/// ------------------------------------------
-
-//privades ----------------------
-template <typename T>
-typename arbreBin<T>::node* arbreBin<T>::copia_nodes(node* m) {
+typename Abin<T>::node* Abin<T>::copia_nodes(node* m) {
+/* Pre: cert */
+/* Post: si m és NULL, el resultat és NULL; sinó,
+   el resultat apunta al primer node d'un arbre binari
+   de nodes que són còpia de l'arbre apuntat per m */
   node* n;
   if (m == NULL) n = NULL;
   else {
@@ -118,7 +77,10 @@ typename arbreBin<T>::node* arbreBin<T>::copia_nodes(node* m) {
 };
 
 template <typename T>
-void arbreBin<T>::esborra_nodes(node* m) {
+void Abin<T>::esborra_nodes(node* m) {
+/* Pre: cert */
+/* Post: no fa res si m és NULL, sinó allibera
+   espai dels nodes de l'arbre binari apuntat per m */
   if (m != NULL) {
     esborra_nodes(m->f_esq);
     esborra_nodes(m->f_dret);
@@ -126,61 +88,70 @@ void arbreBin<T>::esborra_nodes(node* m) {
   }
 };
 
-//constructors ----------------------
 template <typename T>
-arbreBin<T>::arbreBin()
-/* Pre: cert */
-/* Post: el resultat és un arbre sense cap element */
-{
-  _arrel = NULL;
-}
-
-template <typename T>
-arbreBin<T>::arbreBin(const arbreBin<T>& a)
-/* Pre: cert */
-/* Post: el resultat és una còpia de a */
-{
-  _arrel = copia_nodes(a._arrel);
-}
-
-template <typename T>
-arbreBin<T>::arbreBin(const T& x, const arbreBin<T>& ae, const arbreBin<T>& ad)
+Abin<T>::Abin(Abin<T>& ae, const T& x, Abin<T>& ad) {
 /* Pre: cert */
 /* Post: el resultat és un arbre amb x com arrel, ae com a fill
-esquerre i ad com a fill dret */
-{
+esquerre i ad com a fill dret. No fa còpia dels arbres ae i ad */
   _arrel = new node;
   try {
     _arrel->info = x;
-    _arrel->f_esq = copia_nodes(ae._arrel);
-    _arrel->f_dret = copia_nodes(ad._arrel);
   }
   catch (...) {
     delete _arrel;
     throw;
   }
+  _arrel->f_esq = ae._arrel;
+  ae._arrel = NULL;
+  _arrel->f_dret = ad._arrel;
+  ad._arrel = NULL;
+}
+template <typename T>
+bool Abin<T>::el_trobem(int e)
+{
+  node* p=_arrel;
+  bool ere=false;
+  while(p!=NULL and not ere){
+    if(p->info==e){
+
+      ere=true;
+    }
+    else {
+      if(e<p->info){//esq
+        p=p->f_esq;
+      }
+      else if(e>p->info) {//dreta
+        p=p->f_dret;
+      }
+
+    }
+    
+    
+  }
+
+  return ere;
+
+
 }
 
-//destructor ----------------------
 template <typename T>
-arbreBin<T>::~arbreBin() {
+Abin<T>::Abin(const Abin<T> &a) {
+  _arrel = copia_nodes(a._arrel);
+};
+
+template <typename T>
+Abin<T>::~Abin() {
   esborra_nodes(_arrel);
-}
-template <typename T>
-void arbreBin<T>::insereix(int e)
-/* Pre: cert */
-/* Post: el paràmetre implícit se li fica e en bfs */
-{
-    insereix2(e,_arrel);
-}
+};
+
 
 
 template <typename T>
-void arbreBin<T>::insereix2(int e,node* x)
+void Abin<T>::insereix2(int e,node* x)
 /* Pre: cert */
 /* Post: el paràmetre implícit se li fica e en bfs */
 {
-  if(x->info<e){//Esquerra
+  if(x->info>e){//Esquerra
     if(x->f_esq==NULL){
       node* ere=new node;
       x->f_esq=ere;
@@ -194,7 +165,7 @@ void arbreBin<T>::insereix2(int e,node* x)
 
 
   }
-  else if(x->info>e){ //Dreta
+  else if(x->info<e){ //Dreta
     if(x->f_dret==NULL){
       node* ere=new node;
       x->f_dret=ere;
@@ -208,41 +179,15 @@ void arbreBin<T>::insereix2(int e,node* x)
 
   }
 }
-
 template <typename T>
-bool arbreBin<T>::el_trobem(int e)
-{
-  node* p=_arrel;
-  bool ere=false;
-  while(p!=NULL and not ere){
-    if(p->info==e)ere=true;
-
-    else if(e>p->info){//esq
-      p=p->f_esq;
-    }
-    else{//dreta
-      p=p->f_dret;
-    }
-  }
-
-  return ere;
-
-
-}
-
-
-//modificadors ----------------------
-template <typename T>
-void arbreBin<T>::a_buit()
+void Abin<T>::insereix(int e) 
 /* Pre: cert */
-/* Post: el paràmetre implícit no té cap element */
+/* Post: el paràmetre implícit se li fica e en bfs */
 {
-  esborra_nodes(_arrel);
-  _arrel = NULL;
+    insereix2(e,_arrel);
 }
-
 template <typename T>
-arbreBin<T>& arbreBin<T>::operator=(const arbreBin<T>& a) {
+Abin<T>& Abin<T>::operator=(const Abin<T>& a) {
   if (this != &a) {
     node* aux;
     aux = copia_nodes(a._arrel);
@@ -250,102 +195,70 @@ arbreBin<T>& arbreBin<T>::operator=(const arbreBin<T>& a) {
     _arrel = aux;
   }
   return (*this);
-}
-
-//consultors ----------------------
-template <typename T>
-const T& arbreBin<T>::arrel() const {
-/* Pre: el paràmetre implícit no és buit */
-/* Post: el resultat és l'arrel del paràmetre implícit */
-  if (this->es_buit()) {
-    std::cout<<"ERROR - Operació 'arrel' sobre un arbre buit."<<std::endl;
-    exit(1);
-  }
-  return _arrel->info;
-}
+};
 
 template <typename T>
-arbreBin<T> arbreBin<T>::fe() const
-/* Pre: el paràmetre implícit no és buit */
-/* Post: el resultat és el fill esquerre del p.i. original */
-{
-  if (this->es_buit()) {
-    std::cout<<"ERROR - Operació 'fe' sobre un arbre buit."<<std::endl;
-    exit(1);
-  }
-  arbreBin<T> a;
-  a._arrel = copia_nodes(_arrel->f_esq);
-  return a;
-}
-
-template <typename T>
-arbreBin<T> arbreBin<T>::fd() const
-/* Pre: el paràmetre implícit no és buit */
-/* Post: el resultat és el fill dret del p.i. original */
-{
-  if (this->es_buit()) {
-    std::cout<<"ERROR - Operació 'fd' sobre un arbre buit."<<std::endl;
-    exit(1);
-  }
-  arbreBin<T> a;
-  a._arrel = copia_nodes(_arrel->f_dret);
-  return a;
-}
-
-template <typename T>
-bool arbreBin<T>::es_buit() const
-/* Pre: cert */
-/* Post: el resultat indica si el p.i. és buit o no */
-{
-  return (_arrel == NULL);
-}
-
-
-/// ============================================== ///
-///           Definició operacions friend          ///
-
-// operador << d'escriptura
-std::string dep = ""; 
-template <class U>
-std::ostream& operator<<(std::ostream &os , const arbreBin<U> &x) {
-/* Pre: cert */
-/* Post: s'han escrit al canal estàndard de sortida els elements de x */
-  std::string d1=dep;
-  if (x.es_buit()) 
+void Abin<T>::print_nodes(node* p, ostream &os, string prefix) {
+  if (p == NULL) 
     os << ".";
   else {
-    os << "["<<x.arrel() << "]\n" << d1 << " \\__";
-    dep = d1+" |  ";
-    os << x.fd();
-    os << "\n" << d1 << " \\__";
-    dep = d1+"    ";
-    os << x.fe();
+    string prefix2;
+    os << "["<<p->info << "]\n" << prefix << " \\__";
+    prefix2 = prefix + " |  ";
+    print_nodes(p->f_dret, os, prefix2);
+    os << "\n" << prefix << " \\__";
+    prefix2 = prefix + "    ";
+    print_nodes(p->f_esq, os, prefix2);
   }
-  dep = d1;
+}
+
+// operador << d'escriptura
+template <class U>
+ostream& operator<<(ostream &os, const Abin<U> &a) {
+  a.print_nodes(a._arrel, os, "");
+  os << "\n";
   return os;
 }
 
-
-
-#endif
-/*
-void insereix(arbreBin<int> &resp, int r){
-
+// operador >> de lectura
+template <class U>
+istream& operator>>(istream &is, Abin<U> &a) {  
+  int valor;
+  cin >> valor;
+  if (valor != -1) {
+    Abin<U> ae;
+    is >> ae;
+    Abin<U> ad;
+    is >> ad;
+    a = Abin<U>(ae, valor, ad);
+  }
+  return is;
 }
-*/
+Abin<int> llegir(){
 
-int main(){
+    Abin<int> A, A1, A2;
+    int n = 0; cin >> n;
 
-  vector<int> nombre;
+    if(n != -1){
+        A1 = llegir();
+        A2 = llegir();
+        A = Abin<int>(A1,n,A2);
+    }
 
-  int a;
-  int num;
+    return A;
+}
+int main() {
+
+
+ 
+   int num;
   cin>>num;
-  if(num>0){
-    arbreBin<int> resp;
+  
+    Abin<int> resp;
     int cont=1;
+    int a;
     cin>>a;
-    arbreBin<int> respr(a,resp,resp);
+    Abin<int> respr(resp,a,resp);
     while(cont<num){
       cin>>a;
       if(a!=-1){
@@ -356,6 +269,7 @@ int main(){
       }
     } 
     //cout<<respr<<endl;
+    
 
 
     
@@ -365,20 +279,9 @@ int main(){
       else if(respr.el_trobem(e))cout<<e<<" "<<"1"<<endl;
       else cout<<e<<" "<<"0"<<endl;
     }
-  }
-  else{
-    int e;
+  
+  
 
-    while(cin>>e){
-      cout<<e<<" "<<"0"<<endl;
-      
-    }
-
-  }
-
-
-
-
-
-
+  
+  
 }
